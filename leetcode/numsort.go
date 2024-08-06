@@ -1,4 +1,28 @@
+// Package leetcode ...
+
 package leetcode
+
+import (
+	"fmt"
+	"math/rand"
+	"time"
+)
+
+const (
+	TestLen = int32(10)
+)
+
+// TestSort 测试排序
+func TestSort() {
+	listNum := make([]int32, 0)
+	rand.Seed(time.Now().UnixNano())
+	for i := int32(0); i <= TestLen; i++ {
+		listNum = append(listNum, rand.Int31n(100))
+	}
+	fmt.Println("Before Sort", "listNum", listNum)
+	BubbleSort(listNum)
+	fmt.Println("After Sort", "listNum", listNum)
+}
 
 // BubbleSort 冒泡排序 implements the bubble sort algorithm using int32
 func BubbleSort(arr []int32) {
