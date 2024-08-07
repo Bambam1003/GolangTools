@@ -1,5 +1,4 @@
 // Package leetcode ...
-
 package leetcode
 
 import (
