@@ -173,3 +173,71 @@ func heapify(arr []int32, n, i int) {
 		heapify(arr, n, largest)
 	}
 }
+
+// CountingSort 计数排序
+func CountingSort(arr []int32) []int32 {
+	// 找到数组中的最大值和最小值，确定计数数组的长度
+	maxVal := arr[0]
+	minVal := arr[0]
+	for _, val := range arr {
+		if val > maxVal {
+			maxVal = val
+		}
+		if val < minVal {
+			minVal = val
+		}
+	}
+
+	// 初始化计数数组，长度为最大值减去最小值加一
+	count := make([]int, maxVal-minVal+1)
+
+	// 统计每个元素出现的次数
+	for _, val := range arr {
+		count[val-minVal]++
+	}
+
+	// 将计数数组中的值累加，得到每个元素的排序位置
+	for i := 1; i < len(count); i++ {
+		count[i] += count[i-1]
+	}
+
+	// 根据计数数组，将元素放到正确的位置
+	result := make([]int32, len(arr))
+	for i := len(arr) - 1; i >= 0; i-- {
+		result[count[arr[i]-minVal]-1] = arr[i]
+		count[arr[i]-minVal]--
+	}
+
+	return result
+}
+
+// RadixSort 基数排序
+func RadixSort(arr []int32) []int32 {
+	// 找到最大值的位数
+	maxVal := arr[0]
+	for _, val := range arr {
+		if val > maxVal {
+			maxVal = val
+		}
+	}
+	exp := 1
+
+	// 根据位数进行排序
+	for int(maxVal)/exp > 0 {
+		buckets := make([][]int32, 10)
+		for _, val := range arr {
+			bucketIdx := val / int32(exp) % 10
+			buckets[bucketIdx] = append(buckets[bucketIdx], val)
+		}
+		// 将各个桶中的元素合并
+		index := 0
+		for i := 0; i < 10; i++ {
+			for j := 0; j < len(buckets[i]); j++ {
+				arr[index] = buckets[i][j]
+				index++
+			}
+		}
+		exp *= 10
+	}
+	return arr
+}
